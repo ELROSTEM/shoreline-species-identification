@@ -3,6 +3,7 @@ from datetime import datetime
 import cv2
 import numpy as np
 import streamlit as st
+import torch
 from PIL import Image
 
 st.title("Species Detection")
@@ -35,6 +36,9 @@ if submit_button == True:
     form.empty()
 
     # AI --------------------------------------
+
+    model = torch.jit.load('model.pt')
+    model.eval()  
 
     # Save Image
     img = Image.open(picture)
