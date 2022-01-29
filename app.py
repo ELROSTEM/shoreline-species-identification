@@ -25,7 +25,8 @@ with form.container():
         #Take Picture
         picture = st.camera_input("Take a picture")
         # or use file uploader
-        picture = st.file_uploader("Upload an image")
+        if picture is None:
+            picture = st.file_uploader("Upload an image")
         st.caption("Unable to use the camera? Use the file uploader and select take photo.")
 
         submit_button = st.form_submit_button(label='Submit')
