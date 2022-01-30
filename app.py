@@ -2,15 +2,10 @@ import os
 from datetime import datetime
 
 import cv2 as cv
-import matplotlib.pyplot as plt
-import numpy as np
 import streamlit as st
 import torch
 import torchvision.transforms as transforms
 from PIL import Image
-from torchvision.datasets import MNIST
-
-from num_model import MLP
 
 st.title("Species Detection")
 
@@ -44,52 +39,11 @@ if submit_button == True:
 
     # AI --------------------------------------
 
-    # # Test num_mlp
-    # with torch.no_grad():
-        
-    #     transform = transforms.ToTensor()
-
-    #     # Retrieve item
-    #     dataset = MNIST(os.getcwd(), download=True, transform=transforms.ToTensor())
-    #     index = 333
-    #     item = dataset[index]
-    #     image = item[0]
-    #     true_target = item[1]
-
-    #     # Tried to implement the file upload to num model
-    #     # image = cv.imread('img.jpg', cv.IMREAD_UNCHANGED)
-    #     # scale_percent = 60 # percent of original size
-    #     # width = int(image.shape[1] * scale_percent / 100)
-    #     # height = int(image.shape[0] * scale_percent / 100)
-    #     # dim = (width, height)
-    #     # # resize image
-    #     # resized = cv.resize(image, dim, interpolation = cv.INTER_AREA)
-    #     # image = transform(resized)
-        
-    #     # Loading the saved model
-    #     save_path = './mlp.pth'
-    #     mlp = MLP()
-    #     mlp.load_state_dict(torch.load(save_path))
-    #     mlp.eval()
-        
-    #     # Generate prediction
-    #     prediction = mlp(image)
-        
-    #     # Predicted class value using argmax
-    #     predicted_class = np.argmax(prediction)
-        
-    #     # Reshape image
-    #     image = image.reshape(28, 28, 1)
-        
-    #     # Show result
-    #     # fig = plt.imshow(image, cmap='gray')
-    #     # st.pyplot(fig)
-    #     st.write(predicted_class)
-    #     # plt.title(f'Prediction: {predicted_class} - Actual target: {true_target}')
-
+    # Read Image as PIL
+    img = Image.open(picture)
 
     # Save Image
-    img = Image.open(picture)
+    # save_img = img.save("img.jpg")
 
     # Load Model
     model = torch.jit.load('./model/model_scripted.pt')
@@ -102,27 +56,26 @@ if submit_button == True:
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
-    img = preprocess(img)
+    model_img = preprocess(img)
     
     # Generate prediction
-    data = [img]
-    prediction = model(model(data[0].unsqueeze(0)))
+    data = [model_img]
+    prediction = model(data[0].unsqueeze(0))
     # # Predicted class value using argmax
-    # predicted_class = np.argmax(prediction)
+    _, preds = torch.max(prediction, 1)
 
-    # Green
-    # .save("img.jpg")
-    # # Read Image
-    img = cv.imread("img.jpg")
-    ## convert to hsv
-    hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
-    ## mask of green (36,25,25) ~ (86, 255,255)
-    mask = cv.inRange(hsv, (36, 25, 25), (70, 255,255))
-    ## slice the green
-    imask = mask>0
-    green = np.zeros_like(img, np.uint8)
-    green[imask] = img[imask]
-    # ## save 
+    # # Green
+    # # # Read Image
+    # img = cv.imread("img.jpg")
+    # ## convert to hsv
+    # hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
+    # ## mask of green (36,25,25) ~ (86, 255,255)
+    # mask = cv.inRange(hsv, (36, 25, 25), (70, 255,255))
+    # ## slice the green
+    # imask = mask>0
+    # green = np.zeros_like(img, np.uint8)
+    # green[imask] = img[imask]
+    # # ## save 
     # cv.imwrite("green.png", green)
 
     # -------------------------------------------------------
@@ -141,8 +94,12 @@ if submit_button == True:
     
     # Display info to user
     st.header("So what did you detect?")
+    if preds == 1:
+        st.write("Bee")
+    else:
+        st.write("Ant")
     st.image(img, use_column_width=True, clamp= True)
-    st.image(green, use_column_width=True,clamp = True)
+    # st.image(green, use_column_width=True,clamp = True)
 
     st.header("Here is information on your species")
     st.header("Also here is a graph of how many times your species was detected at our park")
