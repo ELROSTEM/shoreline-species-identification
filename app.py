@@ -1,10 +1,16 @@
+import os
 from datetime import datetime
 
-import cv2
+import cv2 as cv
+import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 import torch
+import torchvision.transforms as transforms
 from PIL import Image
+from torchvision.datasets import MNIST
+
+from num_model import MLP
 
 st.title("Species Detection")
 
@@ -23,13 +29,14 @@ with form.container():
         wall_section = st.radio("Wall Section",("1","2","3"))
 
 
-        #Take Picture
+        # Take Picture
         picture = st.camera_input("Take a picture")
         # or use file uploader
         if picture is None:
             picture = st.file_uploader("Upload an image")
         st.caption("Unable to use the camera? Use the file uploader and select take photo.")
 
+        # Submit button
         submit_button = st.form_submit_button(label='Submit')
 
 if submit_button == True:
@@ -37,29 +44,86 @@ if submit_button == True:
 
     # AI --------------------------------------
 
-    model = torch.jit.load('model.pt')
-    model.eval()  
+    # # Test num_mlp
+    # with torch.no_grad():
+        
+    #     transform = transforms.ToTensor()
+
+    #     # Retrieve item
+    #     dataset = MNIST(os.getcwd(), download=True, transform=transforms.ToTensor())
+    #     index = 333
+    #     item = dataset[index]
+    #     image = item[0]
+    #     true_target = item[1]
+
+    #     # Tried to implement the file upload to num model
+    #     # image = cv.imread('img.jpg', cv.IMREAD_UNCHANGED)
+    #     # scale_percent = 60 # percent of original size
+    #     # width = int(image.shape[1] * scale_percent / 100)
+    #     # height = int(image.shape[0] * scale_percent / 100)
+    #     # dim = (width, height)
+    #     # # resize image
+    #     # resized = cv.resize(image, dim, interpolation = cv.INTER_AREA)
+    #     # image = transform(resized)
+        
+    #     # Loading the saved model
+    #     save_path = './mlp.pth'
+    #     mlp = MLP()
+    #     mlp.load_state_dict(torch.load(save_path))
+    #     mlp.eval()
+        
+    #     # Generate prediction
+    #     prediction = mlp(image)
+        
+    #     # Predicted class value using argmax
+    #     predicted_class = np.argmax(prediction)
+        
+    #     # Reshape image
+    #     image = image.reshape(28, 28, 1)
+        
+    #     # Show result
+    #     # fig = plt.imshow(image, cmap='gray')
+    #     # st.pyplot(fig)
+    #     st.write(predicted_class)
+    #     # plt.title(f'Prediction: {predicted_class} - Actual target: {true_target}')
+
 
     # Save Image
     img = Image.open(picture)
-    img = img.save("img.jpg")
 
-    # Read Image
-    img = cv2.imread("img.jpg")
+    # Load Model
+    model = torch.jit.load('./model/model_scripted.pt')
+    model.eval()
 
+    ## Preprocess to tensor
+    preprocess =  transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])
+    img = preprocess(img)
+    
+    # Generate prediction
+    data = [img]
+    prediction = model(model(data[0].unsqueeze(0)))
+    # # Predicted class value using argmax
+    # predicted_class = np.argmax(prediction)
+
+    # Green
+    # .save("img.jpg")
+    # # Read Image
+    img = cv.imread("img.jpg")
     ## convert to hsv
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
+    hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     ## mask of green (36,25,25) ~ (86, 255,255)
-    mask = cv2.inRange(hsv, (36, 25, 25), (70, 255,255))
-
+    mask = cv.inRange(hsv, (36, 25, 25), (70, 255,255))
     ## slice the green
     imask = mask>0
     green = np.zeros_like(img, np.uint8)
     green[imask] = img[imask]
-
-    ## save 
-    cv2.imwrite("green.png", green)
+    # ## save 
+    # cv.imwrite("green.png", green)
 
     # -------------------------------------------------------
     # Info write / Display
