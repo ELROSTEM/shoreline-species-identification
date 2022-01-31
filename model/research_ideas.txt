@@ -1,0 +1,13 @@
+This txt is dedicated to potential research we can do using our AI model
+
+1. Depending on our pretrained model will our output be better? For example, if we transferred a pretrained NN that diferentiated rocks to
+differentiating shellfish (oysters, clam, mussels) would that be better than transferring a NN trained on differentiating animals? This is 
+because shellfish kinda looks like rocks so lower level details on rocks would be better like detecting shape, ridges, texture, and color?? No
+clue.
+    - would need to experiment between diferent model. (Use allegro)
+
+2. Using different sources of input. For example, if we knew the image was taken from the section one of the wall and oysters typically appeared
+in section one then there is a higher chance of the image being a oyster. This is like using more than one sense. There are different inputs you 
+use in order to determine if it is an oyster or not. What if the season matter or the time of day or the weather IDK. There has to be a neural net
+for this that can take in not just an image but also other text information. Testing if using more than one input would help with the accuracy
+of the model.
