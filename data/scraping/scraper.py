@@ -97,10 +97,11 @@ def search_and_download(search_term:str,driver_path:str,target_path='./images',n
 # Driver Path
 DRIVER_PATH = './data/Scraping/chromedriver.exe'
 
-search_term = 'Oysters'
+search_term = 'Atlantic Bay Scallop'
 
 search_and_download(
     search_term=search_term,
+    number_images=162,
     driver_path=DRIVER_PATH,
     target_path= './data/shellfish_data'
 )

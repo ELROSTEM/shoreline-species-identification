@@ -1,5 +1,5 @@
-# Author: Ryan Zhang
-# Credit: Sasank Chilamkurthy (Template: https://www.youtube.com/watch?v=h-rvIsD7WOo&t=139s&ab_channel=PyTorch)
+# Author: Sasank Chilamkurthy (From: https://www.youtube.com/watch?v=h-rvIsD7WOo&t=139s&ab_channel=PyTorch)
+# Modified: Ryan Zhang
 
 from __future__ import division, print_function
 
@@ -139,7 +139,7 @@ def train_finetune(params):
     num_ftrs = model_ft.fc.in_features
     # Here the size of each output sample is set to 2.
     # Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
-    model_ft.fc = nn.Linear(num_ftrs, 2)
+    model_ft.fc = nn.Linear(num_ftrs, len(class_names))
 
     model = model_ft.to(device)
 
@@ -161,7 +161,7 @@ def train_fixed_feature_extractor(params):
 
     # Parameters of newly constructed modules have requires_grad=True by default
     num_ftrs = model_conv.fc.in_features
-    model_conv.fc = nn.Linear(num_ftrs, 2)
+    model_conv.fc = nn.Linear(num_ftrs, 2) # <- Might need to change to len(class_names)
 
     model = model_conv.to(device)
 
@@ -182,7 +182,7 @@ def train_baseline(params):
     num_ftrs = model_bl.fc.in_features
     # Here the size of each output sample is set to 2.
     # Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
-    model_bl.fc = nn.Linear(num_ftrs, 2)
+    model_bl.fc = nn.Linear(num_ftrs, len(class_names))
 
     model = model_bl.to(device)
 
@@ -218,14 +218,8 @@ args = {'initial_lr': 0.001,'momentum': 0.9,'step_size': 7, 'gamma': 0.1,'epochs
 
 task.connect(args)
 
-# Download data
-# local_data_folder = StorageManager.get_local_copy(
-#         remote_url="https://download.pytorch.org/tutorial"
-#                    "/hymenoptera_data.zip",
-#         name="dataset",
-#     )
-
-data_dir = './data/hymenoptera_data'
+# Data
+data_dir = './data/shellfish_data'
 
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
@@ -250,4 +244,4 @@ else:
 visualize_model(output_model)
 
 model_scripted = torch.jit.script(output_model) # Export to TorchScript
-model_scripted.save('./model/model_scripted.pt') # Save
+model_scripted.save('./model/shellfish_model_scripted.pt') # Save

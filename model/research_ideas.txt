@@ -4,10 +4,17 @@ This txt is dedicated to potential research we can do using our AI model
 differentiating shellfish (oysters, clam, mussels) would that be better than transferring a NN trained on differentiating animals? This is 
 because shellfish kinda looks like rocks so lower level details on rocks would be better like detecting shape, ridges, texture, and color?? No
 clue.
-    - would need to experiment between diferent model. (Use allegro)
+    - would need to experiment between diferent model. (Use tensor board [get rid of allegro])
 
 2. Using different sources of input. For example, if we knew the image was taken from the section one of the wall and oysters typically appeared
 in section one then there is a higher chance of the image being a oyster. This is like using more than one sense. There are different inputs you 
 use in order to determine if it is an oyster or not. What if the season matter or the time of day or the weather IDK. There has to be a neural net
 for this that can take in not just an image but also other text information. Testing if using more than one input would help with the accuracy
-of the model.
+of the model. Maybe we do first predict with NN then we predict with regression and then we modify our first prediction based on the regression.
+
+Some Tabular data we can based our prediction off of also I think we should also record these in database
+    - sighting location
+    - dimensions
+    - color
+
+3. 
