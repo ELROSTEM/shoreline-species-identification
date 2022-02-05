@@ -15,7 +15,6 @@ import torch.optim as optim
 import torchvision
 from torch.optim import lr_scheduler
 from torchvision import datasets, models, transforms
-from trains import StorageManager, Task
 
 plt.ion()   # interactive mode
 
@@ -57,7 +56,7 @@ def visualize_model(model, num_images=6):
         model.train(mode=was_training)
 
 
-def train_model(model, criterion, optimizer, scheduler, dataloaders, logger, num_epochs):
+def train_model(model, criterion, optimizer, scheduler, dataloaders, num_epochs):
     since = time.time()
 
     best_model_wts = copy.deepcopy(model.state_dict())
@@ -114,9 +113,6 @@ def train_model(model, criterion, optimizer, scheduler, dataloaders, logger, num
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(
                 phase, epoch_loss, epoch_acc))
 
-            logger.report_scalar(title=phase,series='epoch_loss', iteration=epoch, value=epoch_loss)
-            logger.report_scalar(title=phase, series='epoch_accuracy', iteration=epoch, value=epoch_acc)
-
             # deep copy the model
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
@@ -150,7 +146,7 @@ def train_finetune(params):
 
     # Decay LR by a factor of 0.1 every 7 epochs
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=params['step_size'], gamma=params['gamma'])
-    model_ft = train_model(model, criterion, optimizer, exp_lr_scheduler, dataloaders, logger, num_epochs=params['epochs'])
+    model_ft = train_model(model, criterion, optimizer, exp_lr_scheduler, dataloaders, num_epochs=params['epochs'])
     return model_ft
 
 
@@ -173,7 +169,7 @@ def train_fixed_feature_extractor(params):
 
     # Decay LR by a factor of 0.1 every 7 epochs
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=params['step_size'], gamma=params['gamma'])
-    model_ft = train_model(model, criterion, optimizer, exp_lr_scheduler, dataloaders, logger, num_epochs=params['epochs'])
+    model_ft = train_model(model, criterion, optimizer, exp_lr_scheduler, dataloaders, num_epochs=params['epochs'])
     return model_ft
 
 
@@ -189,7 +185,7 @@ def train_baseline(params):
     criterion = nn.CrossEntropyLoss()
     optimizer = None
     exp_lr_scheduler = None
-    model_ft = train_model(model, criterion, optimizer, exp_lr_scheduler, dataloaders, logger, num_epochs=params['epochs'])
+    model_ft = train_model(model, criterion, optimizer, exp_lr_scheduler, dataloaders, num_epochs=params['epochs'])
     return model_ft
 
 
@@ -210,13 +206,8 @@ data_transforms = {
     ]),
 }
 
-task = Task.init(project_name='Pytorch Transfer Learning',task_name='fine tuning')
-logger = task.get_logger()
-
 # Define input parameters for training
 args = {'initial_lr': 0.001,'momentum': 0.9,'step_size': 7, 'gamma': 0.1,'epochs': 2, 'batch_size': 4, 'workers': 4,'network': 'finetune'}
-
-task.connect(args)
 
 # Data
 data_dir = './data/shellfish_data'

@@ -17,4 +17,6 @@ Some Tabular data we can based our prediction off of also I think we should also
     - dimensions
     - color
 
-3. 
+3. Resistive training where each class is classified by a binary classifier. Then all the binary classifiers are united into one big NN. When training
+the binary classifier there will be a "NOT class" folder where all the other data will be stored. So lets say a Oyster training dataset will have
+"oyster" images and then a "Not Oyster" containing everything else that is not an oyster. This should in theory improve our model?
