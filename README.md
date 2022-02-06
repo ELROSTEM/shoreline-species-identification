@@ -6,8 +6,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/roshanlam/ReadMeTemplate/">
-    <img src="./logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/ELROSTEM">
+    <img src="https://avatars.githubusercontent.com/u/96550667" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Shoreline Species Identification</h3>
@@ -43,7 +43,7 @@ What can it do:
 
 Of course, there are already apps that can do this but we were trying to learn and develope something fun and intresting ourselves.
 
-A list of commonly used resources we used to learn are listed in the acknowledgements.
+A list of resources we used to learn are listed in the acknowledgements.
 
 ### Built With
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
@@ -83,7 +83,6 @@ Contributions are what make the open source community such an amazing place to b
 
 <!-- LICENSE -->
 ## 📝 License
-Describe your License for your project. 
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
@@ -93,8 +92,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## 📫 Contact
 
 Ryan Zhang - ryanz22@nycstudents.net
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 
 
 
