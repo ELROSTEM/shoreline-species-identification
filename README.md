@@ -15,7 +15,11 @@
   <p align="center">
     A app that can distiguish between an Atlantic Bay Scallop and a Hard Clam! (For now)
     <br />
+    <div>
+
     [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/irrelevantryan/shoreline-species-identification/main/app.py)
+
+    </div>
     <a href="https://share.streamlit.io/irrelevantryan/shoreline-species-identification/main/app.py"><strong>Visit APP »</strong></a>
     <br />
     <br />
@@ -105,10 +109,9 @@ Ryan Zhang - ryanz22@nycstudents.net
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [forks-shield]: https://img.shields.io/github/forks/roshanlam/ReadMeTemplate?style=for-the-badge
-[forks-url]: https://github.com/roshanlam/ReadMeTemplate/network/members
+[forks-url]: https://github.com/ELROSTEM/shoreline-species-identification/network/members
 [stars-shield]: https://img.shields.io/github/stars/roshanlam/ReadMeTemplate?style=for-the-badge
-[stars-url]: https://github.com/roshanlam/ReadMeTemplate/stargazers
+[stars-url]: https://github.com/ELROSTEM/shoreline-species-identification/stargazers
 [issues-shield]: https://img.shields.io/github/issues/roshanlam/ReadMeTemplate?style=for-the-badge
-[issues-url]: https://github.com/roshanlam/ReadMeTemplate/issues
+[issues-url]: https://github.com/ELROSTEM/shoreline-species-identification/issues
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/roshan-lamichhane
