@@ -18,6 +18,9 @@ from torchvision import datasets, models, transforms
 
 plt.ion()   # interactive mode
 
+from torch.utils.tensorboard import SummaryWriter
+writer = SummaryWriter()
+
 
 def tensor_to_img(inp):
     inp = inp.numpy().transpose((1, 2, 0))
@@ -28,32 +31,32 @@ def tensor_to_img(inp):
     return inp
 
 
-def visualize_model(model, num_images=6):
-    was_training = model.training
-    model.eval()
-    images_so_far = 0
-    fig = plt.figure(figsize=[6,10])
+# def visualize_model(model, num_images=6):
+#     was_training = model.training
+#     model.eval()
+#     images_so_far = 0
+#     fig = plt.figure(figsize=[6,10])
 
-    with torch.no_grad():
-        for i, (inputs, labels) in enumerate(dataloaders['val']):
-            inputs = inputs.to(device)
-            labels = labels.to(device)
+#     with torch.no_grad():
+#         for i, (inputs, labels) in enumerate(dataloaders['val']):
+#             inputs = inputs.to(device)
+#             labels = labels.to(device)
 
-            outputs = model(inputs)
-            _, preds = torch.max(outputs, 1)
+#             outputs = model(inputs)
+#             _, preds = torch.max(outputs, 1)
 
-            for j in range(inputs.size()[0]):
-                images_so_far += 1
-                img = tensor_to_img(inputs.cpu().data[j])
-                fig.add_subplot(num_images / 2, 2, images_so_far)
-                plt.title('predicted: {}'.format(class_names[preds[j]]))
-                plt.imshow(img)
+#             for j in range(inputs.size()[0]):
+#                 images_so_far += 1
+#                 img = tensor_to_img(inputs.cpu().data[j])
+#                 fig.add_subplot(num_images / 2, 2, images_so_far)
+#                 plt.title('predicted: {}'.format(class_names[preds[j]]))
+#                 plt.imshow(img)
 
-                if images_so_far == num_images:
-                    plt.show()
-                    model.train(mode=was_training)
-                    return
-        model.train(mode=was_training)
+#                 if images_so_far == num_images:
+#                     plt.show()
+#                     model.train(mode=was_training)
+#                     return
+#         model.train(mode=was_training)
 
 
 def train_model(model, criterion, optimizer, scheduler, dataloaders, num_epochs):
@@ -112,11 +115,15 @@ def train_model(model, criterion, optimizer, scheduler, dataloaders, num_epochs)
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(
                 phase, epoch_loss, epoch_acc))
+            writer.add_scalar("Loss/train", epoch_loss, epoch)
+            writer.add_scalar("Acc/train", epoch_acc, epoch)
 
             # deep copy the model
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
+
+        
 
         print()
 
@@ -231,8 +238,8 @@ elif args['network'] == 'fixed fe':
 else:
     output_model = train_baseline(args)
 
-
-visualize_model(output_model)
+writer.flush()
+# visualize_model(output_model)
 
 model_scripted = torch.jit.script(output_model) # Export to TorchScript
 model_scripted.save('./model/shellfish_model_scripted.pt') # Save
