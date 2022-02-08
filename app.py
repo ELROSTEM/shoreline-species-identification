@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-import cv2 as cv
+# import cv2 as cv
 import streamlit as st
 import torch
 import torchvision.transforms as transforms

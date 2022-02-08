@@ -207,7 +207,7 @@ data_transforms = {
 }
 
 # Define input parameters for training
-args = {'initial_lr': 0.001,'momentum': 0.9,'step_size': 7, 'gamma': 0.1,'epochs': 2, 'batch_size': 4, 'workers': 4,'network': 'finetune'}
+args = {'initial_lr': 0.001,'momentum': 0.9,'step_size': 7, 'gamma': 0.1,'epochs': 20, 'batch_size': 4, 'workers': 4,'network': 'finetune'}
 
 # Data
 data_dir = './data/shellfish_data'
