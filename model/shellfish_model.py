@@ -19,6 +19,7 @@ from torchvision import datasets, models, transforms
 plt.ion()   # interactive mode
 
 from torch.utils.tensorboard import SummaryWriter
+
 writer = SummaryWriter()
 
 
@@ -115,8 +116,8 @@ def train_model(model, criterion, optimizer, scheduler, dataloaders, num_epochs)
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(
                 phase, epoch_loss, epoch_acc))
-            writer.add_scalar("Loss/train", epoch_loss, epoch)
-            writer.add_scalar("Acc/train", epoch_acc, epoch)
+            writer.add_scalar(f"Loss/{phase}", epoch_loss, epoch)
+            writer.add_scalar(f"Acc/{phase}", epoch_acc, epoch)
 
             # deep copy the model
             if phase == 'val' and epoch_acc > best_acc:
@@ -214,7 +215,7 @@ data_transforms = {
 }
 
 # Define input parameters for training
-args = {'initial_lr': 0.001,'momentum': 0.9,'step_size': 7, 'gamma': 0.1,'epochs': 20, 'batch_size': 4, 'workers': 4,'network': 'finetune'}
+args = {'initial_lr': 0.001,'momentum': 0.9,'step_size': 7, 'gamma': 0.1,'epochs': 50, 'batch_size': 4, 'workers': 4,'network': 'finetune'}
 
 # Data
 data_dir = './data/shellfish_data'
