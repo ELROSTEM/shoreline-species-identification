@@ -129,7 +129,7 @@ if picture is not None:
     img = Image.open(picture)
 
     # Load Model
-    model = torch.jit.load('./model/shellfish_model_scripted.pt')
+    model = torch.jit.load('./model/test_shellfish_model_scripted.pt')
     model.eval()
 
     ## Preprocess to tensor
@@ -155,6 +155,8 @@ if picture is not None:
         atlantic_bay_scallop()
     elif preds == 1:
         hard_clam()
+    else:
+        st.write("Hi")
 
 
 
