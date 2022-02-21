@@ -215,7 +215,7 @@ data_transforms = {
 }
 
 # Define input parameters for training
-args = {'initial_lr': 0.001,'momentum': 0.9,'step_size': 7, 'gamma': 0.1,'epochs': 50, 'batch_size': 4, 'workers': 4,'network': 'finetune'}
+args = {'initial_lr': 0.001,'momentum': 0.9,'step_size': 7, 'gamma': 0.1,'epochs': 2, 'batch_size': 4, 'workers': 4,'network': 'finetune'}
 
 # Data
 data_dir = './data/shellfish_data'
@@ -243,4 +243,4 @@ writer.flush()
 # visualize_model(output_model)
 
 model_scripted = torch.jit.script(output_model) # Export to TorchScript
-model_scripted.save('./model/shellfish_model_scripted.pt') # Save
+model_scripted.save('./model/test_shellfish_model_scripted.pt') # Save
