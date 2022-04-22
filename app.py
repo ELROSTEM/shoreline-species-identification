@@ -63,7 +63,7 @@ def animal_sighting_data():
 }
     st_echarts(option, height="500px", key="echarts")
 
-def  atlantic_bay_scallop():
+def atlantic_bay_scallop():
     """Info for atlantic bay scallop"""
     st.session_state['animal'] = 'Atlantic Bay Scallop'
 
@@ -77,6 +77,46 @@ def  atlantic_bay_scallop():
         Along the edge of a bay scallop shell are 30 to 40 bright blue eyes. Each eye has a cornea, a lens, an optic nerve, and a retina which enables it to see movements and shadows. This allows them to detect predators. In addition to eyes they also have tentacles along the edge of their shells. The tentacles contain cells that are sensitive to chemicals in the water. These cells help the animal react to its environment. Bay scallops grow quickly, and rarely live past three years of age.
 
         Habitat: East Coast from Cape Cod to the Gulf of Mexico. On Long Island, Bay Scallops are mostly found in the small bays and harbors, most notably in the Peconic Bay Estuary which lies on the eastern end of Long Island. Bay scallops have also been found in Great South Bay, Moriches Bay, and Shinnecock Bay. Their preferred habitats are within eelgrass beds on sandy and sandy-mud bottoms. Juvenile bay scallops use byssal threads to attach themselves to aquatic plants and rocks to keep them away from predators. They prefer salinities ranging from 31 ppt to 32.8 ppt.
+    """)
+    st.caption("Info from: https://www.dec.ny.gov/animals/117470.html")
+
+    st.subheader("Data:")
+    animal_sighting_data()
+
+def blue_mussel():
+    """Info for blue mussel"""
+    st.session_state['animal'] = 'Blue Mussel'
+
+    st.subheader("Blue Mussel")
+    st.image(img, use_column_width=True, clamp= True)
+
+    st.subheader("Info:")
+    st.markdown("""
+        The blue mussel is also known as the "Edible Mussel". They are shaped like rounded triangles and are blue black to brown in color with a shiny violet interior. Shells have a slender brownish foot, which houses the byssus gland that produces a strong, thread-like fiber called the byssal threads that allows the mussels to attach themselves to substrates. The threads harden upon contact with the water and are quite tough, however they are not permanent. They use byssal threads to attach to docks, pilings, rocks, and most any solid object. They live in close proximity to other Blue Mussels and together they form dense beds that host a rich community of benthic invertebrates including crustaceans and marine worms. Beds often break up during major storms.
+
+        Blue mussels can grow up to four inches long, and possess two short siphons inside their shell and direct the flow of water. They are known to have significant water filtering capacity and readily absorb water-borne toxins. Many organizations use them as indications of harmful algal blooms (HABs). DEC conducts a Marine Biotoxin Monitoring Program from spring through fall to identify waters where any HABs may be occurring. This is done to protect human health because toxins accumulate in the tissues of animals that unknowingly filter the harmful toxins. If you were to eat a shellfish that has consumed harmful biotoxins, it poses a serious threat to both your gastrointestinal and neurologic health.
+
+        Habitat: Coastal areas of the northern Atlantic Ocean, including North America, Europe, and the northern Palearctic. Found in intertidal shallow water along the shoreline attached to a number of solid objects. They prefer cool water, hard substrates such as gravel and shell beds, rocks, and submerged human-made structures with good water flow, but they are also able to withstand great extremes, including drought, excessive heat, and freezing temperatures. If blue mussels are left exposed to air when the tide goes out, they survive by passing air over their damp gills to breathe. They prefer areas of high salinity.
+    """)
+    st.caption("Info from: https://www.dec.ny.gov/animals/117470.html")
+
+    st.subheader("Data:")
+    animal_sighting_data()
+
+def eastern_oyster():
+    """Info for eastern oyster"""
+    st.session_state['animal'] = 'Eastern Oyster'
+
+    st.subheader("Eastern Oyster")
+    st.image(img, use_column_width=True, clamp= True)
+
+    st.subheader("Info:")
+    st.markdown("""
+        Eastern oysters are also known as "American Oysters", "Atlantic Oysters", and "American Cupped Oysters". They have thick, deeply cupped elongated shells that are bumpy and rough. They are a pale gray to white in color and can grow up to eight inches long. Oysters are reef building organisms which means they attach themselves to rocks, shells or other oysters and over time, the accumulation forms a reef. Juvenile oysters, called spat, also attach to these substrates.
+
+        Like many other oysters, the eastern oyster makes pearls. Pearls are formed when a sand grain or other irritating particle gets stuck inside the oyster's shell. To get rid of this irritant the oyster covers the sand grain with a smooth substance called nacre; a form of calcium carbonate that is similar to the material of its own shell. After receiving several layers of nacre, the sand grain eventually becomes a pearl. Eastern oysters can live up to approximately 20 years.
+
+        Habitat: East Coast of the United States from Canada to the Gulf of Mexico. They are surface-dwelling mollusks that thrive on reeds and inhabit intertidal and subtidal areas in water depths between eight and twenty-five feet. They can tolerate salinities ranging from 5 ppt to 30 ppt.
     """)
     st.caption("Info from: https://www.dec.ny.gov/animals/117470.html")
 
@@ -144,21 +184,24 @@ if picture is not None:
     # Generate prediction
     data = [model_img]
     prediction = model(data[0].unsqueeze(0))
-    # # Predicted class value using argmax
-    _, preds = torch.max(prediction, 1)
+    # Predicted class value using argmax
+    preds = prediction.argmax(dim=1).item()
 
     st.success("Indentified!")
+    st.write(f"The species is {preds}")
 
     # Display info to user
     st.header("So what did you detect?")
     if preds == 0:
         atlantic_bay_scallop()
     elif preds == 1:
+        blue_mussel()
+    elif preds == 2:
+        eastern_oyster()
+    elif preds == 3:
         hard_clam()
     else:
-        st.write("Hi")
-
-
+        st.write("Error")
 
 #----------------------------------------------------------
 #Form
